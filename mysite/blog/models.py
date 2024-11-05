@@ -4,7 +4,7 @@ from django.utils import timezone
 
 class Blog(models.Model):
     
-    class Status(models.IntegerChoices):
+    class Status(models.TextChoices):
         DRAFT = 'DF', 'Draft'
         PUBLISHED = 'PB', 'Published'
 
@@ -22,7 +22,7 @@ class Blog(models.Model):
 
     class Meta:
         ordering = ('-publish',)
-        Indexes = [
+        indexes = [
             models.Index(fields=['-publish']),
         ]
 
