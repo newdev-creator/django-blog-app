@@ -2,6 +2,10 @@
 migrate:
 	python3 manage.py migrate
 
+# Cible pour créer la migration
+makemigrations:
+	python3 manage.py makemigrations
+
 # Cible pour lancer le serveur de développement
 runserver:
 	python3 manage.py runserver
