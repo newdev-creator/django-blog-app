@@ -12,3 +12,7 @@ runserver:
 
 # Cible pour exécuter les migrations et lancer le serveur
 start: migrate runserver
+
+# Cible pour l'ouverture du shell
+shell:
+	python3 manage.py shell
