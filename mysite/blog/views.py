@@ -1,4 +1,3 @@
-import stat
 from django.core.mail import send_mail
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger
 from django.shortcuts import get_object_or_404, render
@@ -40,7 +39,7 @@ def post_detail(request, year: int, month: int, day: int, post: str):
     )
 
     # List of active comments for this post
-    comments = post.commments.filter(activate=True)
+    comments = post.comments.filter(activate=True)
     # Form for users to comment
     form = CommentForm()
 
