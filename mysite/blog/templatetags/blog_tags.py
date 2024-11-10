@@ -16,11 +16,11 @@ def show_latest_posts(count=5) -> dict:
     return {'latest_posts': latest_posts}
 
 @register.simple_tag
-def get_most_commented_posts(count=5) -> list:
+def get_most_commented_posts(count=5) -> list[ Post ]:
     return Post.published.annotate(
         total_comments=Count('comments')
     ).order_by('-total_comments')[:count]
 
 @register.filter(name='markdown')
-def markdown_format(text):
+def markdown_format(text) -> str:
     return mark_safe(markdown.markdown(text))
