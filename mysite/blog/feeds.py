@@ -7,7 +7,7 @@ from .models import Post
 
 class LatestPostsFeed(Feed):
     title = "My Blog"
-    link = reverse_lazy('blog:latest_posts')
+    link = reverse_lazy('blog:post_list')
     description = "New posts of my blog."
 
     def items(self) -> list[Post]:
@@ -15,6 +15,9 @@ class LatestPostsFeed(Feed):
     
     def item_title(self, item: Post) -> str:
         return item.title
+
+    def item_description(self, item) -> str:
+        return truncatechars_html(markdown.markdown(item.body), 30)
     
     def item_pubdate(self, item: Post) -> str:
         return item.publish
