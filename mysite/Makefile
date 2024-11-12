@@ -1,18 +1,16 @@
-# Cible pour exécuter les migrations
 migrate:
 	python3 manage.py migrate
 
-# Cible pour créer la migration
 makemigrations:
 	python3 manage.py makemigrations
 
-# Cible pour lancer le serveur de développement
 runserver:
 	python3 manage.py runserver
 
-# Cible pour exécuter les migrations et lancer le serveur
 start: migrate runserver
 
-# Cible pour l'ouverture du shell
 shell:
 	python3 manage.py shell
+
+dumpdata:
+	python3 manage.py dumpdata --indent=2 --output=mysite_data.json
