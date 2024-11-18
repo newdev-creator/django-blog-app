@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from taggit.models import Tag
-from .models import Post
+from ..models import Post
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
@@ -79,6 +79,3 @@ class PostListViewTest(TestCase):
         # Test the post list view with an invalid tag
         response = self.client.get(reverse('blog:post_list_by_tag', args=['nonexistent']))
         self.assertEqual(response.status_code, 404)
-    
-
-
