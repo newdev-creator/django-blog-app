@@ -15,5 +15,8 @@ shell:
 dumpdata:
 	python3 manage.py dumpdata --indent=2 --output=mysite_data.json
 
+test:
+	python3 manage.py test
+
 docker:
 	docker start edb52e3b5305

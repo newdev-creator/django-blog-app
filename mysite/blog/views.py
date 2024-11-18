@@ -1,5 +1,6 @@
 from django.core.mail import send_mail
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.contrib.postgres.search import TrigramSimilarity
 from django.views.decorators.http import require_POST
@@ -11,7 +12,7 @@ from .forms import EmailPostForm, CommentForm, SearchForm
 from .models import Post
 
 
-def post_list(request, tag_slug=None):
+def post_list(request: HttpRequest, tag_slug: str = None) -> HttpResponse:
     posts_list = Post.published.all()
     tag = None
     if tag_slug:
@@ -38,7 +39,7 @@ def post_list(request, tag_slug=None):
     )
 
 
-def post_detail(request, year: int, month: int, day: int, post: str):
+def post_detail(request: HttpRequest, year: int, month: int, day: int, post: str) -> HttpResponse:
     post = get_object_or_404(
         Post,
         status=Post.Status.PUBLISHED,
@@ -85,7 +86,7 @@ class PostListView(ListView):
     template_name = 'blog/post/list.html'
 
 
-def post_share(request, post_id):
+def post_share(request: HttpRequest, post_id: int) -> HttpResponse:
     # Retrieve post by id
     post = get_object_or_404(
         Post,
@@ -133,7 +134,7 @@ def post_share(request, post_id):
 
 
 @require_POST
-def post_comment (request, post_id):
+def post_comment (request: HttpRequest, post_id: int) -> HttpResponse:
     post = get_object_or_404(
         Post,
         id=post_id,
@@ -160,7 +161,7 @@ def post_comment (request, post_id):
     )
 
 
-def post_search(request):
+def post_search(request: HttpRequest) -> HttpResponse:
     form = SearchForm()
     query = None
     results = []
