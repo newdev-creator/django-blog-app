@@ -56,6 +56,7 @@ class PostCommentViewTest(TestCase):
         self.assertEqual(response.context['comment'], comment)
 
     def test_post_comment_invalid_form(self):
+        # TODO: NEED TO FIX THIS
         """Test posting an invalid comment (missing body)."""
         url = reverse('blog:post_comment', args=[self.post.id])
         data = {
