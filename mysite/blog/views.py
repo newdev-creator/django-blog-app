@@ -54,7 +54,7 @@ def post_detail(request: HttpRequest, year: int, month: int, day: int, post: str
     # Form for users to comment
     form = CommentForm()
 
-    # Liste of similar posts
+    # List of similar posts
     post_tags_id = post.tags.values_list('id', flat=True)
     similar_posts = Post.published.filter(
         tags__in=post_tags_id
@@ -73,7 +73,6 @@ def post_detail(request: HttpRequest, year: int, month: int, day: int, post: str
             'similar_posts': similar_posts
         }
     )
-
 
 
 class PostListView(ListView):
@@ -134,7 +133,7 @@ def post_share(request: HttpRequest, post_id: int) -> HttpResponse:
 
 
 @require_POST
-def post_comment (request: HttpRequest, post_id: int) -> HttpResponse:
+def post_comment(request: HttpRequest, post_id: int) -> HttpResponse:
     post = get_object_or_404(
         Post,
         id=post_id,
@@ -187,4 +186,3 @@ def post_search(request: HttpRequest) -> HttpResponse:
             'results': results
         }
     )
-
