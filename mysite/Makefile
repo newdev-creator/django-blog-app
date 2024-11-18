@@ -14,3 +14,6 @@ shell:
 
 dumpdata:
 	python3 manage.py dumpdata --indent=2 --output=mysite_data.json
+
+docker:
+	docker start edb52e3b5305
