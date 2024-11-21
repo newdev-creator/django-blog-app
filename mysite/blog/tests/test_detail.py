@@ -18,10 +18,10 @@ class PostDetailViewTest(TestCase):
         # Create test post with specific publish date
         self.post = Post.objects.create(
             title="Test Post",
-            slug="test-post",
-            author=self.user,
             body="Test post content",
-            status=Post.Status.PUBLISHED,
+            status='PB',
+            author=self.user,
+            slug="test-post",
             publish=timezone.make_aware(datetime(2024, 1, 1))
         )
 
@@ -50,20 +50,20 @@ class PostDetailViewTest(TestCase):
         # Create similar posts with same tags
         self.similar_post1 = Post.objects.create(
             title="Similar Post 1",
-            slug="similar-post-1",
-            author=self.user,
             body="Similar post 1 content",
-            status=Post.Status.PUBLISHED,
+            status='PB',
+            author=self.user,
+            slug="similar-post-1",
             publish=timezone.now()
         )
         self.similar_post1.tags.add(self.tag1, self.tag2)
 
         self.similar_post2 = Post.objects.create(
             title="Similar Post 2",
-            slug="similar-post-2",
-            author=self.user,
             body="Similar post 2 content",
-            status=Post.Status.PUBLISHED,
+            status='PB',
+            author=self.user,
+            slug="similar-post-2",
             publish=timezone.now()
         )
         self.similar_post2.tags.add(self.tag1)
