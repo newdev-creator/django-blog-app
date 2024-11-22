@@ -4,42 +4,30 @@ from django.conf import settings
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 from django.utils.timezone import now
-from openai import OpenAI
+from transformers import pipeline
 
 class Command(BaseCommand):
-    help = "Generate a new blog post using AI"
+    help = "Generate a new blog post using Hugging Face Transformers"
 
     def handle(self, *args, **kwargs):
-        # Set up OpenAI API client
-        client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        # Set up the Hugging Face text generation pipeline
+        generator = pipeline("text-generation", model="gpt2")  # Use "distilgpt2" for lighter models
 
-        # Generate title using ChatGPT
-        title_prompt = "Generate a creative and catchy title for a tech blog post."
-        title_response = client.chat.completions.create(
-            messages=[{"role": "user", "content": title_prompt}],
-            max_tokens=10,
-            model="gpt-3.5-turbo",
-        )
-        title = title_response.choices[0].message.content.strip()
+        # Generate title
+        title_prompt = "Generate a creative and catchy title for a tech blog post:"
+        title_result = generator(title_prompt, max_new_tokens=10, num_return_sequences=1, truncation=True)
+        title = title_result[0]['generated_text'].strip()
 
         # Generate body content
-        content_prompt = f"Write a detailed blog post about '{title}'."
-        content_response = client.chat.completions.create(
-            messages=[{"role": "user", "content": content_prompt}],
-            max_tokens=100,
-            model="gpt-3.5-turbo",
-        )
-        body = content_response.choices[0].message.content.strip()
+        content_prompt = f"Write a detailed blog post about '{title}':"
+        content_result = generator(content_prompt, max_new_tokens=100, num_return_sequences=1, truncation=True)
+        body = content_result[0]['generated_text'].strip()
 
         # Generate tags
-        tags_prompt = f"Suggest relevant tags for a blog post about '{title}'."
-        tags_response = client.chat.completions.create(
-            messages=[{"role": "user", "content": tags_prompt}],
-            max_tokens=10,
-            model="gpt-3.5-turbo",
-        )
-        tags_text = tags_response.choices[0].message.content.strip()
-        tags = [tag.strip() for tag in tags_text.split(',')]
+        tags_prompt = f"Suggest relevant tags for a blog post about '{title}':"
+        tags_result = generator(tags_prompt, max_new_tokens=10, num_return_sequences=1, truncation=True)
+        tags_text = tags_result[0]['generated_text'].strip()
+        tags = [tag.strip()[:100] for tag in tags_text.split(',') if len(tag.strip()) <= 100]  # Filter and truncate tags
 
         # Get default author
         User = get_user_model()
